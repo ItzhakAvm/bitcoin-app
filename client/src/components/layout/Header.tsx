@@ -31,7 +31,10 @@ const Header = (props: Props) => {
       <Container>
         <Toolbar>
           <CurrencyBitcoin />
-          <Typography variant="h6" sx={{ ml: 1, mr: 3 }}>
+          <Typography
+            variant="h6"
+            sx={{ display: { sm: 'block', xs: 'none' }, ml: 1, mr: 3 }}
+          >
             Bitcoin App
           </Typography>
           <Stack

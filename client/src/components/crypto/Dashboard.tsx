@@ -43,7 +43,12 @@ const Dashboard = React.memo(() => {
         {shouldRefetch && <RefetchAlert />}
         <DatePicker date={date} onDateChange={setDate} />
         <Paper sx={{ p: 3 }}>
-          <Stack direction="row" alignItems="start" sx={{ mb: 3 }}>
+          <Stack
+            direction="row"
+            alignItems="start"
+            sx={{ mb: 3 }}
+            flexWrap="wrap"
+          >
             <Typography variant="h4" sx={{ flexGrow: 1 }}>
               {dateToFormat({ value: date })}
             </Typography>
