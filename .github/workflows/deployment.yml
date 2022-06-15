@@ -28,6 +28,11 @@ jobs:
           docker push itzhakavm/bitcoin-app-client
           docker push itzhakavm/bitcoin-app-server
           docker push itzhakavm/bitcoin-app-nginx
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
 
       - name: Generate deployment package
         run: zip -r deploy.zip Dockerrun.aws.json

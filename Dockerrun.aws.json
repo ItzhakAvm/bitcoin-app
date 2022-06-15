@@ -27,7 +27,7 @@
           "containerPort": 80
         }
       ],
-      "links": ["api", "client"],
+      "links": ["server", "client"],
       "dependsOn": [
         {
           "containerName": "server",
