@@ -1,0 +1,45 @@
+name: Deployment
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build client production app
+        run: docker build -t itzhakavm/bitcoin-app-client -f ./client/Dockerfile ./client
+
+      - name: Build server production app
+        run: docker build -t itzhakavm/bitcoin-app-server -f ./server/Dockerfile ./server
+
+      - name: Build nginx production server
+        run: docker build -t itzhakavm/bitcoin-app-nginx -f ./nginx/Dockerfile ./nginx
+
+      - name: Login to docker
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_ID }} --password-stdin
+
+      - name: Push builds to docker-hub
+        run: |
+          docker push itzhakavm/bitcoin-app-client
+          docker push itzhakavm/bitcoin-app-server
+          docker push itzhakavm/bitcoin-app-nginx
+
+      - name: Generate deployment package
+        run: zip -r deploy.zip Dockerrun.aws.json
+
+      - name: Deploy to ElasticBeanstalk
+        uses: einaregilsson/beanstalk-deploy@v20
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: bitcoin-app
+          environment_name: Bitcoinapp-env
+          existing_bucket_name: elasticbeanstalk-us-east-1-701929225152
+          version_label: ${{ github.sha }}
+          region: us-east-1
+          deployment_package: deploy.zip

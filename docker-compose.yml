@@ -1,0 +1,40 @@
+version: '3'
+services:
+  mysql:
+    image: mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysql_password
+      - MYSQL_DATABASE=crypto
+  adminer:
+    image: adminer
+    restart: always
+    depends_on:
+      - mysql
+    ports:
+      - 8080:8080
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    depends_on:
+      - client
+      - server
+    restart: always
+    ports:
+      - '3000:80'
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    hostname: api
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_UNAME=root
+      - DB_PASSWD=mysql_password
+      - DB_NAME=crypto

@@ -1,0 +1,43 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "client",
+      "image": "itzhakavm/bitcoin-app-client",
+      "hostname": "client",
+      "essential": false,
+      "memory": 128
+    },
+    {
+      "name": "server",
+      "image": "itzhakavm/bitcoin-app-server",
+      "hostname": "api",
+      "essential": false,
+      "memory": 128
+    },
+    {
+      "name": "nginx",
+      "image": "itzhakavm/bitcoin-app-nginx",
+      "hostname": "nginx",
+      "essential": true,
+      "memory": 128,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        }
+      ],
+      "links": ["api", "client"],
+      "dependsOn": [
+        {
+          "containerName": "server",
+          "condition": "START"
+        },
+        {
+          "containerName": "client",
+          "condition": "START"
+        }
+      ]
+    }
+  ]
+}
