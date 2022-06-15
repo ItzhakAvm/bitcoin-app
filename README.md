@@ -1,4 +1,5 @@
 # Bitcoin App
+I had the urge to add a shit-ton of comments everywhere, but that's an example project, so... maybe in the future.
 
 ## Production URL
 http://bitcoinapp-env.eba-c7cshmw2.us-east-1.elasticbeanstalk.com
