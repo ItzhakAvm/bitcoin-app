@@ -29,6 +29,8 @@ jobs:
           docker push itzhakavm/bitcoin-app-server
           docker push itzhakavm/bitcoin-app-nginx
   deploy:
+    needs: build
+
     runs-on: ubuntu-latest
 
     steps:
